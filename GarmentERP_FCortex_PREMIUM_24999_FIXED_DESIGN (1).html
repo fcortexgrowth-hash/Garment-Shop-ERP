@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GarmentERP Premium — F-Cortex Digital Hub</title>
+<style>
+:root{
+  --bg:#070b16; --panel:#0e1526; --panel2:#121c31; --line:#263452;
+  --text:#f5f7ff; --muted:#94a3c7; --cyan:#20d9ff; --violet:#8b5cf6;
+  --pink:#f472b6; --green:#35e39a; --gold:#f5c451; --danger:#ff667d;
+}
+*{box-sizing:border-box} html,body{margin:0;min-height:100%;font-family:Inter,Segoe UI,Arial,sans-serif;background:
+radial-gradient(circle at 15% 10%,rgba(32,217,255,.10),transparent 28%),
+radial-gradient(circle at 85% 15%,rgba(139,92,246,.14),transparent 30%),var(--bg);color:var(--text)}
+button,input,select{font:inherit} button{cursor:pointer}
+.hidden{display:none!important}.muted{color:var(--muted)}
+/* LOGIN */
+.login-shell{min-height:100vh;display:grid;place-items:center;padding:28px;position:relative;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(5px);opacity:.25;pointer-events:none}
+.o1{width:360px;height:360px;background:#14d9ff;left:-150px;top:-100px}.o2{width:430px;height:430px;background:#8b5cf6;right:-180px;bottom:-180px}
+.login-wrap{width:min(1100px,100%);display:grid;grid-template-columns:1.05fr .95fr;border:1px solid rgba(255,255,255,.10);border-radius:30px;overflow:hidden;background:rgba(12,19,35,.84);box-shadow:0 35px 100px rgba(0,0,0,.5);backdrop-filter:blur(18px);position:relative;z-index:1}
+.brand-side{padding:55px;background:linear-gradient(145deg,rgba(16,29,52,.95),rgba(12,17,31,.85));border-right:1px solid var(--line);display:flex;flex-direction:column;justify-content:space-between}
+.logo{display:inline-flex;align-items:center;gap:10px;font-weight:900;letter-spacing:1.4px;color:#fff;font-size:20px}
+.logo-badge{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,var(--cyan),var(--violet));box-shadow:0 0 30px rgba(32,217,255,.2)}
+.brand-side h1{font-size:52px;line-height:1.03;margin:48px 0 18px;letter-spacing:-2px}
+.brand-side h1 span{background:linear-gradient(90deg,var(--cyan),#b794ff,var(--pink));-webkit-background-clip:text;color:transparent}
+.feature-list{display:grid;gap:12px;margin-top:30px}.feature{display:flex;gap:12px;align-items:center;color:#dbe5ff}.tick{width:28px;height:28px;border-radius:9px;background:rgba(53,227,154,.12);color:var(--green);display:grid;place-items:center}
+.version{margin-top:35px;color:#6f7fa4;font-size:12px;letter-spacing:1px}
+.login-side{padding:42px;background:rgba(7,11,22,.68)}
+.topline{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
+.pill{padding:8px 12px;border:1px solid var(--line);border-radius:999px;color:#b8c6e6;font-size:12px}
+.login-side h2{font-size:30px;margin:0 0 7px}.sub{color:var(--muted);font-size:14px;margin-bottom:25px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;background:#090f1d;border:1px solid var(--line);padding:5px;border-radius:14px;margin-bottom:22px}
+.tab{border:0;background:transparent;color:var(--muted);padding:11px;border-radius:10px}.tab.active{background:linear-gradient(90deg,rgba(32,217,255,.15),rgba(139,92,246,.18));color:#fff}
+.form{display:grid;gap:14px}.field label{display:block;color:#aebbd7;font-size:12px;margin:0 0 7px}.field input,.field select{width:100%;background:#0a1120;border:1px solid #263654;color:#fff;border-radius:12px;padding:13px 14px;outline:none}.field input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(32,217,255,.08)}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:5px}
+.btn{border:1px solid var(--line);background:#15213a;color:#fff;padding:13px 15px;border-radius:12px;font-weight:700;transition:.18s}.btn:hover{transform:translateY(-1px);filter:brightness(1.12)}
+.btn-primary{background:linear-gradient(100deg,#10bddc,#7658f3);border:0;box-shadow:0 12px 28px rgba(71,91,255,.22)}
+.btn-trial{grid-column:1/-1;background:linear-gradient(100deg,#0dbd8a,#20d9ff);border:0;color:#041017;font-size:15px}
+.price-card{margin-top:20px;border:1px solid rgba(245,196,81,.28);background:linear-gradient(145deg,rgba(245,196,81,.08),rgba(139,92,246,.07));border-radius:16px;padding:16px}
+.price-card strong{font-size:23px;color:var(--gold)}.price-card small{display:block;color:var(--muted);margin-top:4px}
+.note{font-size:11px;color:#71809f;text-align:center;margin-top:16px}
+/* APP */
+.app{min-height:100vh;display:grid;grid-template-columns:245px 1fr}
+.sidebar{background:rgba(10,16,29,.96);border-right:1px solid var(--line);padding:20px 14px;position:sticky;top:0;height:100vh}
+.side-logo{padding:10px 12px 22px;border-bottom:1px solid var(--line);margin-bottom:15px}.side-logo b{font-size:15px;letter-spacing:1px}.side-logo small{display:block;color:var(--muted);margin-top:5px}
+.nav{display:grid;gap:6px}.nav button{border:1px solid transparent;background:transparent;color:#aebbd7;text-align:left;padding:11px 12px;border-radius:11px}.nav button:hover,.nav button.active{background:linear-gradient(90deg,rgba(32,217,255,.10),rgba(139,92,246,.12));color:#fff;border-color:#263654}
+.side-bottom{position:absolute;left:14px;right:14px;bottom:16px}.trial-mini{border:1px solid #22536a;background:#0b1e2b;padding:12px;border-radius:12px;font-size:12px}.trial-mini b{color:var(--cyan)}
+.main{min-width:0}.topbar{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px;background:rgba(7,11,22,.7);backdrop-filter:blur(14px);position:sticky;top:0;z-index:5}
+.topbar .right{display:flex;gap:10px;align-items:center}.status{padding:7px 10px;border-radius:999px;font-size:11px;background:rgba(53,227,154,.10);color:var(--green);border:1px solid rgba(53,227,154,.2)}
+.content{padding:28px;max-width:1500px;margin:auto}.page-head{display:flex;justify-content:space-between;gap:15px;align-items:center;margin-bottom:22px}.page-head h2{margin:0;font-size:28px}.page-head p{margin:5px 0 0;color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.card{background:linear-gradient(145deg,rgba(17,27,47,.92),rgba(10,16,29,.92));border:1px solid var(--line);border-radius:17px;padding:18px}.stat-label{color:var(--muted);font-size:12px}.stat-value{font-size:27px;font-weight:800;margin-top:9px}.stat-foot{font-size:11px;color:#71809f;margin-top:6px}
+.grid{display:grid;grid-template-columns:1.4fr .8fr;gap:15px;margin-top:15px}.panel{background:rgba(14,21,38,.9);border:1px solid var(--line);border-radius:17px;padding:18px}.panel h3{margin:0 0 14px;font-size:16px}.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.quick button{padding:16px;background:#101a2e;border:1px solid #263654;border-radius:13px;color:#dce6ff;text-align:left}.quick button:hover{border-color:#39748b}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:13px}.table{width:100%;border-collapse:collapse;min-width:650px}.table th,.table td{padding:12px;border-bottom:1px solid #1e2a42;text-align:left;font-size:12px}.table th{color:#8798bd;background:#0b1221}.empty{text-align:center;color:#71809f;padding:28px}
+.form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.full{grid-column:1/-1}.toolbar{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:14px}.search{flex:1;min-width:180px;background:#09101f;border:1px solid var(--line);border-radius:11px;color:#fff;padding:11px}
+.badge{display:inline-flex;padding:5px 8px;border-radius:7px;background:#18233a;color:#b9c9e9;font-size:11px}.gold{color:var(--gold)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;place-items:center;padding:20px;z-index:30}.modal.show{display:grid}.modal-box{width:min(700px,100%);max-height:90vh;overflow:auto;background:#0d1628;border:1px solid #334363;border-radius:20px;padding:22px;box-shadow:0 30px 90px #000}.modal-head{display:flex;justify-content:space-between;align-items:center}.close{border:0;background:#18253d;color:#fff;border-radius:10px;padding:8px 11px}.toast{position:fixed;right:22px;bottom:22px;z-index:50;background:#121d31;border:1px solid #344766;padding:13px 16px;border-radius:12px;box-shadow:0 15px 40px #000;display:none}.toast.show{display:block}
+@media(max-width:900px){.login-wrap{grid-template-columns:1fr}.brand-side{display:none}.app{grid-template-columns:1fr}.sidebar{position:fixed;left:-270px;z-index:20;width:245px;transition:.2s}.sidebar.open{left:0}.cards{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.topbar{padding:0 15px}.content{padding:18px}}
+@media(max-width:520px){.cards{grid-template-columns:1fr}.actions{grid-template-columns:1fr}.quick{grid-template-columns:1fr}.login-side{padding:25px}.login-shell{padding:12px}}
+
+/* ===== GARMENTERP V3 LOGIN — COMPLETELY NEW START SCREEN ===== */
+.login-screen-v3{
+  min-height:100svh;
+  height:100svh;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 8% 15%,rgba(245,196,81,.10),transparent 26%),
+    radial-gradient(circle at 92% 85%,rgba(20,217,239,.09),transparent 30%),
+    #070a10;
+  color:#f8fafc;
+  display:flex;
+  flex-direction:column;
+  padding:20px 34px 16px;
+}
+.login-topbar{
+  flex:0 0 auto;
+  height:58px;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  border-bottom:1px solid rgba(255,255,255,.09);
+}
+.brand-mark{
+  width:40px;height:40px;border-radius:11px;
+  display:grid;place-items:center;
+  background:linear-gradient(145deg,#f5c451,#c48b20);
+  color:#090b10;font-weight:1000;font-size:14px;
+  box-shadow:0 8px 24px rgba(245,196,81,.16);
+}
+.brand-name{font-size:13px;letter-spacing:2.2px;font-weight:900}
+.brand-product{font-size:9px;letter-spacing:1.7px;color:#8d98aa;margin-top:3px}
+.top-price{margin-left:auto;display:flex;align-items:center;gap:12px}
+.top-price span{font-size:9px;letter-spacing:1.7px;color:#b8a06a}
+.top-price strong{font-size:17px;color:#f5c451}
+.login-main-v3{
+  width:min(1120px,100%);
+  flex:1 1 auto;
+  min-height:0;
+  margin:18px auto 12px;
+  display:grid;
+  grid-template-columns:minmax(0,1.12fr) minmax(360px,.78fr);
+  gap:30px;
+  align-items:center;
+}
+.login-intro-v3{padding:10px 8px 10px 12px}
+.eyebrow{
+  display:inline-block;
+  font-size:9px;letter-spacing:2.5px;font-weight:900;
+  color:#f5c451;
+  border-left:3px solid #f5c451;padding-left:9px;
+  margin-bottom:15px;
+}
+.login-intro-v3 h1{
+  font-size:clamp(32px,4vw,57px);
+  line-height:1.03;
+  margin:0 0 14px;
+  letter-spacing:-2.5px;
+}
+.login-intro-v3 h1 span{
+  color:#8b96a9;
+}
+.login-intro-v3>p{
+  max-width:610px;color:#9ba6b7;font-size:14px;line-height:1.65;margin:0 0 20px;
+}
+.benefit-grid-v3{
+  display:grid;grid-template-columns:repeat(2,minmax(0,220px));gap:8px 10px;
+  margin-bottom:20px;
+}
+.benefit-grid-v3>div{
+  min-height:47px;padding:10px 12px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.025);
+  border-radius:9px;display:flex;align-items:center;gap:11px;
+}
+.benefit-grid-v3 b{font-size:9px;color:#f5c451;letter-spacing:1px}
+.benefit-grid-v3 span{font-size:12px;color:#dce3ed}
+.trial-banner-v3{
+  max-width:650px;
+  display:flex;align-items:center;justify-content:space-between;gap:18px;
+  padding:13px 14px 13px 16px;
+  border:1px solid rgba(245,196,81,.28);
+  border-radius:13px;
+  background:linear-gradient(90deg,rgba(245,196,81,.07),rgba(255,255,255,.025));
+}
+.trial-banner-v3 small{display:block;color:#9da8b8;font-size:8px;letter-spacing:2px;font-weight:800}
+.trial-banner-v3 strong{display:block;color:#fff;font-size:19px;margin-top:2px}
+.trial-big-v3{
+  border:0;border-radius:9px;padding:12px 18px;
+  background:#f5c451;color:#0a0c10;font-weight:900;
+  min-width:185px;transition:.18s;
+}
+.trial-big-v3:hover{transform:translateY(-1px);box-shadow:0 10px 30px rgba(245,196,81,.18)}
+.trial-big-v3 span{margin-left:12px;font-size:18px}
+.login-card-v3{
+  width:100%;
+  max-width:440px;
+  justify-self:end;
+  background:rgba(16,20,29,.94);
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:20px;
+  padding:23px;
+  box-shadow:0 25px 70px rgba(0,0,0,.42);
+}
+.card-top-v3{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.card-top-v3 small{font-size:8px;letter-spacing:2px;color:#f5c451;font-weight:900}
+.card-top-v3 h2{margin:6px 0 0;font-size:25px;letter-spacing:-.6px}
+.status-dot-v3{font-size:9px;color:#8e9aaa;white-space:nowrap}
+.status-dot-v3 i{display:inline-block;width:6px;height:6px;border-radius:50%;background:#36df91;margin-right:5px;box-shadow:0 0 10px #36df91}
+.mode-switch-v3{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:5px;background:#090d14;padding:4px;border-radius:10px;margin:19px 0;
+}
+.mode-btn{
+  border:0;background:transparent;color:#7e8a9d;border-radius:7px;padding:9px 7px;font-size:11px;font-weight:800;
+}
+.mode-btn.active{background:#1b2230;color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)}
+.login-form-v3 label{
+  display:block;color:#8d98a9;font-size:8px;font-weight:900;letter-spacing:1.7px;margin:13px 0 6px
+}
+.input-wrap-v3{
+  display:flex;align-items:center;gap:9px;
+  height:44px;border:1px solid #293242;border-radius:9px;background:#0b1018;
+  padding:0 12px;
+}
+.input-wrap-v3:focus-within{border-color:#f5c451;box-shadow:0 0 0 3px rgba(245,196,81,.07)}
+.input-wrap-v3 span{color:#657083;font-size:12px}
+.input-wrap-v3 input{
+  border:0!important;outline:0!important;background:transparent!important;
+  box-shadow:none!important;padding:0!important;color:#fff;
+}
+.main-login-v3{
+  width:100%;height:45px;margin-top:17px;border:0;border-radius:9px;
+  background:linear-gradient(90deg,#f5c451,#d9a938);color:#0b0d11;font-weight:950;
+}
+.main-login-v3 span{float:right;margin-right:4px;font-size:16px}
+.activate-v3{
+  width:100%;margin-top:9px;padding:10px 12px;border:1px solid #333d4c;border-radius:9px;
+  background:#121823;color:#dbe2ec;display:flex;justify-content:space-between;align-items:center;
+}
+.activate-v3 strong{color:#f5c451}
+.back-login-v3{
+  width:100%;margin-top:9px;padding:10px;border:1px solid #303949;border-radius:9px;background:#121823;color:#c8d0dc
+}
+.login-note-v3{font-size:9px;line-height:1.5;color:#697688;text-align:center;margin-top:12px}
+.secure-footer-v3{
+  border-top:1px solid rgba(255,255,255,.07);margin-top:17px;padding-top:12px;
+  text-align:center;color:#515d6e;font-size:7px;letter-spacing:1.8px
+}
+.login-footer-v3{
+  flex:0 0 auto;display:flex;justify-content:center;gap:28px;color:#4f5b6c;
+  font-size:8px;letter-spacing:1px;text-transform:uppercase
+}
+@media(max-width:900px){
+  .login-screen-v3{height:auto;min-height:100svh;overflow:auto;padding:15px 18px}
+  .login-main-v3{grid-template-columns:1fr;gap:18px;margin:16px auto}
+  .login-intro-v3{padding:4px 0}
+  .login-intro-v3 h1{font-size:36px}
+  .login-intro-v3>p{font-size:12px}
+  .login-card-v3{justify-self:center;max-width:520px}
+  .login-footer-v3{flex-wrap:wrap;gap:8px 18px}
+}
+@media(max-width:520px){
+  .top-price{display:none}
+  .login-screen-v3{padding:12px}
+  .login-topbar{height:48px}
+  .brand-name{font-size:11px}
+  .login-main-v3{margin-top:12px}
+  .login-intro-v3 h1{font-size:30px;letter-spacing:-1.4px}
+  .benefit-grid-v3{grid-template-columns:1fr 1fr}
+  .trial-banner-v3{align-items:stretch;flex-direction:column}
+  .trial-big-v3{width:100%}
+  .login-card-v3{padding:17px;border-radius:15px}
+}
+
+</style>
+</head>
+<body>
+
+<div id="loginScreen" class="login-screen-v3">
+  <div class="login-topbar">
+    <div class="brand-mark"><span>FC</span></div>
+    <div>
+      <div class="brand-name">F-CORTEX DIGITAL HUB</div>
+      <div class="brand-product">GARMENTERP • BUSINESS EDITION</div>
+    </div>
+    <div class="top-price"><span>PREMIUM</span><strong>₹24,999</strong></div>
+  </div>
+
+  <main class="login-main-v3">
+    <section class="login-intro-v3">
+      <div class="eyebrow">GARMENT BUSINESS MANAGEMENT</div>
+      <h1>Run your garment shop<br><span>with complete control.</span></h1>
+      <p>Billing, stock, purchase, customer khata, reports and business tools — all in one professional workspace.</p>
+
+      <div class="benefit-grid-v3">
+        <div><b>01</b><span>Smart POS Billing</span></div>
+        <div><b>02</b><span>Size & Colour Stock</span></div>
+        <div><b>03</b><span>Customer Khata</span></div>
+        <div><b>04</b><span>Reports & Backup</span></div>
+      </div>
+
+      <div class="trial-banner-v3">
+        <div>
+          <small>TRY BEFORE YOU BUY</small>
+          <strong>15 DAYS FREE</strong>
+        </div>
+        <button type="button" class="trial-big-v3" id="trialButton" onclick="startTrial()">Start Free Trial <span>→</span></button>
+      </div>
+    </section>
+
+    <section class="login-card-v3">
+      <div class="card-top-v3">
+        <div>
+          <small id="loginModeLabel">PREMIUM ACCESS</small>
+          <h2 id="loginTitle">Welcome back</h2>
+        </div>
+        <div class="status-dot-v3"><i></i> Offline Ready</div>
+      </div>
+
+      <div class="mode-switch-v3">
+        <button type="button" id="premiumTab" class="mode-btn active" onclick="setLoginMode('premium')">Premium Login</button>
+        <button type="button" id="recoveryTab" class="mode-btn" onclick="setLoginMode('recovery')">Recover Access</button>
+      </div>
+
+      <div id="premiumForm" class="login-form-v3">
+        <label>LOGIN ID</label>
+        <div class="input-wrap-v3"><span>◉</span><input id="loginId" autocomplete="username" placeholder="Enter login ID"></div>
+
+        <label>PASSWORD</label>
+        <div class="input-wrap-v3"><span>●</span><input id="loginPass" type="password" autocomplete="current-password" placeholder="Enter password"></div>
+
+        <button type="button" class="main-login-v3" onclick="premiumLogin()">Enter GarmentERP <span>↗</span></button>
+
+        <button type="button" class="activate-v3" onclick="openPremium()">
+          <span>Activate Premium</span>
+          <strong>₹24,999</strong>
+        </button>
+
+        <div class="login-note-v3">Premium login becomes available after license activation.</div>
+      </div>
+
+      <div id="recoveryForm" class="login-form-v3 hidden">
+        <label>REGISTERED EMAIL / MOBILE</label>
+        <div class="input-wrap-v3"><span>✉</span><input id="recoverContact" placeholder="Email or mobile"></div>
+
+        <label>OTP</label>
+        <div class="input-wrap-v3"><span>⌁</span><input id="recoverOtp" inputmode="numeric" placeholder="Enter OTP"></div>
+
+        <button type="button" class="main-login-v3" onclick="sendOtp()">Send / Verify OTP <span>→</span></button>
+        <button type="button" class="back-login-v3" onclick="setLoginMode('premium')">← Back to Premium Login</button>
+        <div class="login-note-v3">Prototype OTP: 123456</div>
+      </div>
+
+      <div class="secure-footer-v3">F-CORTEX • SECURE BUSINESS WORKSPACE • GARMENTERP</div>
+    </section>
+  </main>
+
+  <div class="login-footer-v3">
+    <span>GarmentERP Premium Edition</span>
+    <span>15-Day Trial • Premium ₹24,999</span>
+    <span>F-Cortex Digital Hub</span>
+  </div>
+</div>
+
+<div id="app" class="app hidden">
+  <aside class="sidebar" id="sidebar">
+    <div class="side-logo"><b>F-CORTEX / GarmentERP</b><small>Premium business workspace</small></div>
+    <nav class="nav">
+      <button class="active" onclick="page('dashboard',this)">⌂ Dashboard</button>
+      <button onclick="page('billing',this)">▣ Billing / POS</button>
+      <button onclick="page('stock',this)">◈ Stock</button>
+      <button onclick="page('purchase',this)">▤ Purchase</button>
+      <button onclick="page('customers',this)">♟ Customers</button>
+      <button onclick="page('suppliers',this)">◉ Suppliers</button>
+      <button onclick="page('khata',this)">₹ Customer Khata</button>
+      <button onclick="page('reports',this)">▥ Reports</button>
+      <button onclick="page('barcode',this)">▥ Barcode / Tags</button>
+      <button onclick="page('staff',this)">♙ Staff</button>
+      <button onclick="page('backup',this)">▣ Backup</button>
+      <button onclick="page('settings',this)">⚙ Settings</button>
+      <button onclick="page('security',this)">◉ Security Logs</button>
+    </nav>
+    <div class="side-bottom"><div class="trial-mini" id="licenseMini"><b>TRIAL</b><br><span id="trialMini">15-day evaluation active</span></div></div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div><button class="btn" onclick="toggleSide()">☰</button></div>
+      <div class="right"><span class="status" id="licenseStatus">TRIAL</span><span class="muted" id="clock"></span><button class="btn" onclick="logout()">Logout</button></div>
+    </header>
+    <section class="content" id="content"></section>
+  </main>
+</div>
+
+<div id="modal" class="modal"><div class="modal-box" id="modalBox"></div></div>
+<div id="toast" class="toast"></div>
+
+<script>
+const KEY='FCX_GARMENTERP_PREMIUM_V3';
+let db=JSON.parse(localStorage.getItem(KEY)||'null')||{
+ license:'TRIAL', trialStart:null, paidKey:'',
+ admin:{id:'admin',password:'admin123',email:'',mobile:''},
+ shop:{name:'My Garment Store',address:'Main Market',mobile:'',email:'',logo:''},
+ products:[
+  {id:1,name:'Classic Shirt',brand:'Demo Brand',barcode:'100001',size:'M,L,XL',colour:'Blue',purchase:500,sale:799,qty:25},
+  {id:2,name:'Denim Jeans',brand:'Demo Brand',barcode:'100002',size:'30,32,34,36',colour:'Black',purchase:800,sale:1299,qty:18},
+  {id:3,name:'Cotton Kurti',brand:'Demo Brand',barcode:'100003',size:'S,M,L,XL',colour:'Pink',purchase:450,sale:899,qty:12}
+ ],
+ customers:[],suppliers:[],sales:[],purchases:[],khata:[],staff:[],logs:[]
+};
+function save(){localStorage.setItem(KEY,JSON.stringify(db))}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
+function log(a){db.logs.unshift({time:new Date().toLocaleString(),action:a});db.logs=db.logs.slice(0,200);save()}
+function setLoginMode(mode){
+ document.getElementById('premiumForm').classList.toggle('hidden',mode!=='premium');
+ document.getElementById('recoveryForm').classList.toggle('hidden',mode!=='recovery');
+ document.getElementById('premiumTab').classList.toggle('active',mode==='premium');
+ document.getElementById('recoveryTab').classList.toggle('active',mode==='recovery');
+ document.getElementById('loginTitle').textContent=mode==='premium'?'Welcome back':'Account recovery';
+}
+function startTrial(){
+ try{
+   if(!db.trialStart) db.trialStart=Date.now();
+   db.license='TRIAL';
+   save();
+   log('15-day trial started');
+   document.getElementById('loginScreen').classList.add('hidden');
+   document.getElementById('app').classList.remove('hidden');
+   updateLicense();
+   const firstNav=document.querySelector('.nav button');
+   page('dashboard',firstNav);
+   toast('15-day free trial started');
+ }catch(err){
+   console.error('Trial start error:',err);
+   document.getElementById('loginScreen').classList.add('hidden');
+   document.getElementById('app').classList.remove('hidden');
+   toast('Trial started. Dashboard is loading...');
+ }
+}
+function premiumLogin(){
+ if(db.license!=='PREMIUM'){toast('Premium is locked. Activate ₹24,999 Premium first.');return}
+ const id=document.getElementById('loginId').value.trim(), p=document.getElementById('loginPass').value;
+ if(id===db.admin.id && p===db.admin.password){log('Successful premium login');openApp()}else{log('Failed login');toast('Invalid login ID or password')}
+}
+function openPremium(){
+ showModal(`<div class="modal-head"><h2>GarmentERP Premium Activation</h2><button class="close" onclick="closeModal()">✕</button></div>
+ <p class="muted">Premium price configured for this edition.</p>
+ <div class="price-card"><strong>₹24,999</strong><small>Premium activation • separate from installation passkey</small></div>
+ <div class="form-grid" style="margin-top:15px">
+ <div class="field"><label>CLIENT / SHOP NAME</label><input id="payName" value="${esc(db.shop.name)}"></div>
+ <div class="field"><label>MOBILE</label><input id="payMobile" value="${esc(db.shop.mobile)}"></div>
+ <div class="field"><label>PAYMENT METHOD</label><select id="payMethod"><option>UPI / QR</option><option>Paytm</option><option>PhonePe</option><option>Bank Transfer</option></select></div></div>
+ <div class="actions" style="margin-top:16px"><button class="btn btn-primary" onclick="activatePremium()">Simulate Successful Payment ₹24,999</button><button class="btn" onclick="closeModal()">Cancel</button></div>
+ <p class="note">Prototype payment screen. Real gateway integration will be added in the final desktop/web build.</p>`);
+}
+function activatePremium(){
+ db.license='PREMIUM';db.paidKey='FCX-PREMIUM-'+Date.now();db.shop.name=document.getElementById('payName').value||db.shop.name;db.shop.mobile=document.getElementById('payMobile').value||db.shop.mobile;save();log('Premium activated at ₹24,999');closeModal();toast('Premium activated successfully');updateLicense();setLoginMode('premium')
+}
+function sendOtp(){
+ const c=document.getElementById('recoverContact').value.trim(),o=document.getElementById('recoverOtp').value.trim();
+ if(!c){toast('Enter email or mobile first');return}
+ if(!o){toast('OTP sent. Use prototype OTP 123456');return}
+ if(o==='123456'){toast('OTP verified');showModal(`<h2>Reset Premium Password</h2><div class="form"><div class="field"><label>NEW PASSWORD</label><input id="newPass" type="password"></div><button class="btn btn-primary" onclick="resetPass()">Save New Password</button></div>`)}else toast('Invalid OTP')
+}
+function resetPass(){const p=document.getElementById('newPass').value;if(p.length<4){toast('Password must be at least 4 characters');return}db.admin.password=p;save();log('Password changed through recovery');closeModal();toast('Password changed')}
+function openApp(){document.getElementById('loginScreen').classList.add('hidden');document.getElementById('app').classList.remove('hidden');updateLicense();page('dashboard',document.querySelector('.nav button'))}
+function logout(){document.getElementById('app').classList.add('hidden');document.getElementById('loginScreen').classList.remove('hidden');setLoginMode('premium')}
+function updateLicense(){
+ const s=document.getElementById('licenseStatus'),m=document.getElementById('licenseMini');
+ if(db.license==='PREMIUM'){s.textContent='PREMIUM';s.style.color='var(--gold)';m.innerHTML='<b class="gold">PREMIUM</b><br>₹24,999 activated'}else{s.textContent='TRIAL';s.style.color='var(--cyan)';m.innerHTML='<b>TRIAL</b><br>'+trialText()}
+}
+function trialText(){if(!db.trialStart)return'15-day evaluation ready';let d=Math.max(0,15-Math.floor((Date.now()-db.trialStart)/86400000));return d+' day(s) remaining'}
+function clock(){document.getElementById('clock').textContent=new Date().toLocaleString()}
+setInterval(clock,1000);clock();
+document.addEventListener('DOMContentLoaded',()=>{
+  const login=document.getElementById('loginScreen');
+  const app=document.getElementById('app');
+  login?.classList.remove('hidden');
+  app?.classList.add('hidden');
+  setLoginMode('premium');
+  const trial=document.getElementById('trialButton');
+  if(trial){
+    trial.onclick=(ev)=>{
+      ev.preventDefault();
+      startTrial();
+    };
+  }
+});
+function toggleSide(){document.getElementById('sidebar').classList.toggle('open')}
+function page(name,el){
+ document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));if(el)el.classList.add('active');
+ const c=document.getElementById('content');
+ const pages={dashboard:dashboard,billing:billing,stock:stock,purchase:purchase,customers:customers,suppliers:suppliers,khata:khata,reports:reports,barcode:barcode,staff:staff,backup:backup,settings:settings,security:security};
+ c.innerHTML=(pages[name]||dashboard)(); if(name==='dashboard')drawChart(); 
+}
+function dashboard(){const sale=db.sales.reduce((a,b)=>a+b.total,0),pending=db.khata.reduce((a,b)=>a+(Number(b.credit||0)-Number(b.deposit||0)),0),low=db.products.filter(p=>p.qty<=5).length;
+return `<div class="page-head"><div><h2>Business Command Center</h2><p>GarmentERP premium workspace — everything important at a glance.</p></div><button class="btn btn-primary" onclick="page('billing',document.querySelectorAll('.nav button')[1])">＋ New Invoice</button></div>
+<div class="cards"><div class="card"><div class="stat-label">TODAY / TOTAL SALE</div><div class="stat-value">₹${sale.toFixed(0)}</div><div class="stat-foot">Recorded invoices</div></div><div class="card"><div class="stat-label">CUSTOMERS</div><div class="stat-value">${db.customers.length}</div><div class="stat-foot">Customer database</div></div><div class="card"><div class="stat-label">PENDING KHATA</div><div class="stat-value">₹${pending.toFixed(0)}</div><div class="stat-foot">Outstanding balance</div></div><div class="card"><div class="stat-label">LOW STOCK</div><div class="stat-value">${low}</div><div class="stat-foot">Items at or below 5</div></div></div>
+<div class="grid"><div class="panel"><h3>Quick Actions</h3><div class="quick"><button onclick="page('billing')">▣<br><b>New Billing</b><br><span class="muted">Create invoice</span></button><button onclick="page('stock')">◈<br><b>Add Product</b><br><span class="muted">Manage inventory</span></button><button onclick="page('khata')">₹<br><b>Customer Khata</b><br><span class="muted">Credit & deposits</span></button><button onclick="page('purchase')">▤<br><b>Purchase</b><br><span class="muted">Stock inward</span></button><button onclick="page('reports')">▥<br><b>Reports Centre</b><br><span class="muted">Business reports</span></button><button onclick="openPremium()">★<br><b>Premium</b><br><span class="muted">₹24,999 license</span></button></div></div><div class="panel"><h3>Sales Snapshot</h3><canvas id="chart" height="190"></canvas></div></div>`}
+function drawChart(){const cv=document.getElementById('chart');if(!cv)return;const ctx=cv.getContext('2d');ctx.clearRect(0,0,cv.width,cv.height);ctx.strokeStyle='#20d9ff';ctx.lineWidth=3;ctx.beginPath();const vals=[15,35,22,48,42,70,58];vals.forEach((v,i)=>{const x=15+i*(cv.width-30)/6,y=cv.height-15-v*2.2;if(i)ctx.lineTo(x,y);else ctx.moveTo(x,y)});ctx.stroke()}
+function billing(){return `<div class="page-head"><div><h2>Billing / POS</h2><p>Fast garment invoice with size, colour, discount and GST.</p></div><button class="btn" onclick="scanBarcode()">▥ Scan Barcode</button></div>
+<div class="panel"><div class="form-grid"><div class="field"><label>CUSTOMER NAME</label><input id="bCust" placeholder="Walk-in customer"></div><div class="field"><label>MOBILE</label><input id="bMobile" placeholder="Mobile number"></div><div class="field"><label>INVOICE NO.</label><input id="bInv" value="INV-${Date.now().toString().slice(-6)}"></div>
+<div class="field"><label>PRODUCT / BARCODE</label><input id="bProd" list="prodList" placeholder="Type product or barcode"><datalist id="prodList">${db.products.map(p=>`<option value="${esc(p.name)} — ${p.barcode}">`).join('')}</datalist></div>
+<div class="field"><label>SIZE</label><input id="bSize" placeholder="M / 32 / XL"></div><div class="field"><label>COLOUR</label><input id="bColour" placeholder="Black / Blue"></div>
+<div class="field"><label>QTY</label><input id="bQty" type="number" value="1" min="1"></div><div class="field"><label>RATE</label><input id="bRate" type="number" value="0"></div><div class="field"><label>DISCOUNT ₹</label><input id="bDisc" type="number" value="0"></div>
+<div class="field"><label>GST %</label><select id="bGst"><option value="0">0%</option><option value="5">5%</option><option value="12">12%</option><option value="18">18%</option></select></div><div class="field"><label>PAYMENT</label><select id="bPay"><option>Cash</option><option>UPI</option><option>Card</option><option>Credit / Khata</option></select></div>
+<div class="field"><label>PAID AMOUNT</label><input id="bPaid" type="number" value="0"></div></div>
+<div class="actions" style="margin-top:16px"><button class="btn btn-primary" onclick="saveBill()">Save Invoice</button><button class="btn" onclick="previewBill()">Invoice Preview</button><button class="btn" onclick="window.print()">Print</button></div></div>
+<div class="panel" style="margin-top:15px"><h3>Recent Invoices</h3>${saleTable()}</div>`}
+function saleTable(){if(!db.sales.length)return'<div class="empty">No invoices yet.</div>';return `<div class="table-wrap"><table class="table"><tr><th>Invoice</th><th>Customer</th><th>Item</th><th>Qty</th><th>Total</th><th>Date</th></tr>${db.sales.slice(-10).reverse().map(s=>`<tr><td>${esc(s.invoice)}</td><td>${esc(s.customer)}</td><td>${esc(s.product)}</td><td>${s.qty}</td><td>₹${s.total.toFixed(2)}</td><td>${s.date}</td></tr>`).join('')}</table></div>`}
+function saveBill(){const product=document.getElementById('bProd').value,match=db.products.find(p=>p.name.toLowerCase()===product.toLowerCase()||product.includes(p.barcode));let qty=+document.getElementById('bQty').value||1;if(match&&match.qty<qty){toast('Insufficient stock');return}const rate=+(document.getElementById('bRate').value||match?.sale||0),disc=+document.getElementById('bDisc').value||0,g=+document.getElementById('bGst').value||0,sub=Math.max(0,qty*rate-disc),total=sub+(sub*g/100);const s={invoice:document.getElementById('bInv').value,customer:document.getElementById('bCust').value||'Walk-in',mobile:document.getElementById('bMobile').value,product:match?.name||product,qty,rate,total,date:new Date().toLocaleString()};db.sales.push(s);if(match)match.qty-=qty;save();log('Invoice '+s.invoice+' created');toast('Invoice saved');page('billing')}
+function previewBill(){showModal(`<div class="modal-head"><h2>Invoice Preview</h2><button class="close" onclick="closeModal()">✕</button></div><div class="panel"><h2>${esc(db.shop.name)}</h2><p>${esc(db.shop.address)} • ${esc(db.shop.mobile)}</p><hr>${saleTable()}<p class="muted">Thank you for shopping with us.</p></div><button class="btn btn-primary" onclick="window.print()">Print Invoice</button>`)}
+function stock(){return `<div class="page-head"><div><h2>Inventory Control</h2><p>Manage garment product, barcode, sizes, colours and live quantity.</p></div><button class="btn btn-primary" onclick="showProductForm()">＋ Add Product</button></div><div class="panel"><div class="toolbar"><input class="search" id="stockSearch" oninput="renderStock()" placeholder="Search product / barcode / brand"></div><div id="stockTable">${stockTable()}</div></div>`}
+function stockTable(){const q=(document.getElementById('stockSearch')?.value||'').toLowerCase();const arr=db.products.filter(p=>(p.name+p.brand+p.barcode).toLowerCase().includes(q));if(!arr.length)return'<div class="empty">No products found.</div>';return `<div class="table-wrap"><table class="table"><tr><th>Product</th><th>Brand</th><th>Barcode</th><th>Sizes</th><th>Colour</th><th>Sale</th><th>Qty</th><th>Action</th></tr>${arr.map(p=>`<tr><td>${esc(p.name)}</td><td>${esc(p.brand)}</td><td>${p.barcode}</td><td>${esc(p.size)}</td><td>${esc(p.colour)}</td><td>₹${p.sale}</td><td><span class="badge">${p.qty}</span></td><td><button class="btn" onclick="editProduct(${p.id})">Edit</button> <button class="btn" onclick="deleteProduct(${p.id})">Delete</button></td></tr>`).join('')}</table></div>`}
+function renderStock(){document.getElementById('stockTable').innerHTML=stockTable()}
+function showProductForm(p=null){showModal(`<div class="modal-head"><h2>${p?'Edit':'Add'} Product</h2><button class="close" onclick="closeModal()">✕</button></div><div class="form-grid"><div class="field"><label>PRODUCT NAME</label><input id="pName" value="${esc(p?.name||'')}"></div><div class="field"><label>BRAND</label><input id="pBrand" value="${esc(p?.brand||'')}"></div><div class="field"><label>BARCODE</label><input id="pBar" value="${esc(p?.barcode||'')}"></div><div class="field"><label>SIZES</label><input id="pSize" value="${esc(p?.size||'')}"></div><div class="field"><label>COLOURS</label><input id="pCol" value="${esc(p?.colour||'')}"></div><div class="field"><label>PURCHASE RATE</label><input id="pBuy" type="number" value="${p?.purchase||0}"></div><div class="field"><label>SALE RATE</label><input id="pSale" type="number" value="${p?.sale||0}"></div><div class="field"><label>QUANTITY</label><input id="pQty" type="number" value="${p?.qty||0}"></div></div><div class="actions" style="margin-top:15px"><button class="btn btn-primary" onclick="saveProduct(${p?.id||0})">Save Product</button><button class="btn" onclick="closeModal()">Cancel</button></div>`)}
+function saveProduct(id){const x={name:document.getElementById('pName').value.trim(),brand:document.getElementById('pBrand').value.trim(),barcode:document.getElementById('pBar').value.trim(),size:document.getElementById('pSize').value,colour:document.getElementById('pCol').value,purchase:+document.getElementById('pBuy').value||0,sale:+document.getElementById('pSale').value||0,qty:+document.getElementById('pQty').value||0};if(!x.name){toast('Product name required');return}if(id){Object.assign(db.products.find(p=>p.id===id),x)}else{ x.id=Date.now();db.products.push(x)}save();closeModal();page('stock');toast('Product saved')}
+function editProduct(id){showProductForm(db.products.find(p=>p.id===id))}
+function deleteProduct(id){if(confirm('Delete this product?')){db.products=db.products.filter(p=>p.id!==id);save();page('stock')}}
+function purchase(){return `<div class="page-head"><div><h2>Purchase Management</h2><p>Record stock purchases and returns.</p></div><button class="btn btn-primary" onclick="purchaseForm()">＋ Purchase Invoice</button></div><div class="panel">${db.purchases.length?`<div class="table-wrap"><table class="table"><tr><th>Invoice</th><th>Supplier</th><th>Material</th><th>Qty</th><th>Total</th><th>Date</th></tr>${db.purchases.slice().reverse().map(x=>`<tr><td>${x.invoice}</td><td>${esc(x.supplier)}</td><td>${esc(x.material)}</td><td>${x.qty}</td><td>₹${x.total}</td><td>${x.date}</td></tr>`).join('')}</table></div>`:'<div class="empty">No purchase entries.</div>'}</div>`}
+function purchaseForm(){showModal(`<div class="modal-head"><h2>New Purchase</h2><button class="close" onclick="closeModal()">✕</button></div><div class="form-grid"><div class="field"><label>SUPPLIER</label><input id="puSup"></div><div class="field"><label>INVOICE NO.</label><input id="puInv"></div><div class="field"><label>DATE</label><input id="puDate" type="date" value="${new Date().toISOString().slice(0,10)}"></div><div class="field"><label>MATERIAL / PRODUCT</label><input id="puMat"></div><div class="field"><label>QTY</label><input id="puQty" type="number" value="1"></div><div class="field"><label>RATE</label><input id="puRate" type="number" value="0"></div><div class="field"><label>SIZE</label><input id="puSize"></div><div class="field"><label>COLOUR</label><input id="puCol"></div></div><div class="actions" style="margin-top:15px"><button class="btn btn-primary" onclick="savePurchase()">Save Purchase</button></div>`)}
+function savePurchase(){const x={supplier:document.getElementById('puSup').value,invoice:document.getElementById('puInv').value,material:document.getElementById('puMat').value,qty:+document.getElementById('puQty').value||0,rate:+document.getElementById('puRate').value||0,total:(+document.getElementById('puQty').value||0)*(+document.getElementById('puRate').value||0),date:document.getElementById('puDate').value};db.purchases.push(x);const p=db.products.find(a=>a.name.toLowerCase()===x.material.toLowerCase());if(p)p.qty+=x.qty;save();closeModal();page('purchase');toast('Purchase saved')}
+function customers(){return `<div class="page-head"><div><h2>Customer Management</h2><p>Customer details and invoice history.</p></div><button class="btn btn-primary" onclick="customerForm()">＋ Add Customer</button></div><div class="panel"><div class="table-wrap"><table class="table"><tr><th>Name</th><th>Mobile</th><th>Address</th><th>Action</th></tr>${db.customers.map(c=>`<tr><td>${esc(c.name)}</td><td>${esc(c.mobile)}</td><td>${esc(c.address)}</td><td><button class="btn" onclick="viewCustomer('${encodeURIComponent(c.mobile)}')">View</button></td></tr>`).join('')||'<tr><td colspan="4" class="empty">No customers yet.</td></tr>'}</table></div></div>`}
+function customerForm(){showModal(`<div class="modal-head"><h2>Add Customer</h2><button class="close" onclick="closeModal()">✕</button></div><div class="form-grid"><div class="field"><label>NAME</label><input id="cName"></div><div class="field"><label>MOBILE</label><input id="cMobile"></div><div class="field"><label>EMAIL</label><input id="cEmail"></div><div class="field full"><label>ADDRESS</label><input id="cAddress"></div></div><div class="actions" style="margin-top:15px"><button class="btn btn-primary" onclick="saveCustomer()">Save Customer</button></div>`)}
+function saveCustomer(){db.customers.push({name:document.getElementById('cName').value,mobile:document.getElementById('cMobile').value,email:document.getElementById('cEmail').value,address:document.getElementById('cAddress').value});save();closeModal();page('customers');toast('Customer saved')}
+function viewCustomer(m){const c=db.customers.find(x=>x.mobile===decodeURIComponent(m));const inv=db.sales.filter(s=>s.mobile===c?.mobile);showModal(`<div class="modal-head"><h2>${esc(c?.name||'Customer')}</h2><button class="close" onclick="closeModal()">✕</button></div><p class="muted">${esc(c?.address||'')} • ${esc(c?.mobile||'')}</p><h3>Invoice History</h3>${inv.length?inv.map(x=>`<div class="card" style="margin:8px 0">Invoice ${x.invoice} • ${esc(x.product)} • ₹${x.total}</div>`).join(''):'<div class="empty">No invoice history.</div>'}`)}
+function suppliers(){return `<div class="page-head"><div><h2>Supplier Management</h2><p>Retailer/company supplier database and deposits.</p></div><button class="btn btn-primary" onclick="supplierForm()">＋ Add Supplier</button></div><div class="panel">${db.suppliers.length?db.suppliers.map(s=>`<div class="card" style="margin-bottom:10px"><b>${esc(s.name)}</b><br><span class="muted">${esc(s.mobile)} • ${esc(s.address)}</span></div>`).join(''):'<div class="empty">No suppliers yet.</div>'}</div>`}
+function supplierForm(){showModal(`<div class="modal-head"><h2>Add Supplier</h2><button class="close" onclick="closeModal()">✕</button></div><div class="form-grid"><div class="field"><label>NAME / COMPANY</label><input id="sName"></div><div class="field"><label>MOBILE</label><input id="sMobile"></div><div class="field"><label>GSTIN</label><input id="sGst"></div><div class="field full"><label>ADDRESS</label><input id="sAddress"></div></div><button class="btn btn-primary" style="margin-top:15px" onclick="saveSupplier()">Save Supplier</button>`)}
+function saveSupplier(){db.suppliers.push({name:document.getElementById('sName').value,mobile:document.getElementById('sMobile').value,gst:document.getElementById('sGst').value,address:document.getElementById('sAddress').value});save();closeModal();page('suppliers');toast('Supplier saved')}
+function khata(){const credit=db.khata.reduce((a,b)=>a+(+b.credit||0),0),dep=db.khata.reduce((a,b)=>a+(+b.deposit||0),0);return `<div class="page-head"><div><h2>Customer Khata</h2><p>Credit, deposit, pending and customer ledger.</p></div><button class="btn btn-primary" onclick="khataForm()">＋ New Entry</button></div><div class="cards"><div class="card"><div class="stat-label">TOTAL CREDIT</div><div class="stat-value">₹${credit}</div></div><div class="card"><div class="stat-label">TOTAL DEPOSIT</div><div class="stat-value">₹${dep}</div></div><div class="card"><div class="stat-label">PENDING</div><div class="stat-value">₹${credit-dep}</div></div><div class="card"><div class="stat-label">CALCULATOR</div><button class="btn" onclick="calculator()">Open Multi Calculator</button></div></div><div class="panel" style="margin-top:15px">${db.khata.length?db.khata.map((k,i)=>`<div class="card" style="margin-bottom:9px"><b>${esc(k.name)}</b> — Credit ₹${k.credit||0} — Deposit ₹${k.deposit||0} <button class="btn" style="float:right" onclick="deleteKhata(${i})">Delete</button></div>`).join(''):'<div class="empty">No khata entries.</div>'}</div>`}
+function khataForm(){showModal(`<div class="modal-head"><h2>Customer Khata Entry</h2><button class="close" onclick="closeModal()">✕</button></div><div class="form-grid"><div class="field"><label>CUSTOMER</label><input id="kName"></div><div class="field"><label>CREDIT</label><input id="kCredit" type="number" value="0"></div><div class="field"><label>DEPOSIT</label><input id="kDeposit" type="number" value="0"></div><div class="field full"><label>NOTE</label><input id="kNote"></div></div><button class="btn btn-primary" style="margin-top:15px" onclick="saveKhata()">Save Entry</button>`)}
+function saveKhata(){db.khata.push({name:document.getElementById('kName').value,credit:+document.getElementById('kCredit').value||0,deposit:+document.getElementById('kDeposit').value||0,note:document.getElementById('kNote').value});save();closeModal();page('khata');toast('Khata saved')}
+function deleteKhata(i){db.khata.splice(i,1);save();page('khata')}
+function calculator(){showModal(`<div class="modal-head"><h2>Multi Calculator</h2><button class="close" onclick="closeModal()">✕</button></div><div class="field"><label>EXPRESSION</label><input id="calc" placeholder="Example: 1200+450*2"></div><button class="btn btn-primary" style="margin-top:12px" onclick="calcRun()">Calculate</button><div id="calcOut" class="card" style="margin-top:12px">Result: —</div>`)}
+function calcRun(){const v=document.getElementById('calc').value;if(!/^[0-9+*/(). %\-]+$/.test(v)){toast('Invalid expression');return}try{document.getElementById('calcOut').textContent='Result: '+Function('return '+v)()}catch(e){toast('Calculation error')}}
+function reports(){const total=db.sales.reduce((a,b)=>a+b.total,0),purchase=db.purchases.reduce((a,b)=>a+b.total,0);return `<div class="page-head"><div><h2>Reports Centre</h2><p>Sales, purchase, pending and profit overview.</p></div><button class="btn btn-primary" onclick="downloadBackup()">Export Full JSON</button></div><div class="cards"><div class="card"><div class="stat-label">SALES</div><div class="stat-value">₹${total.toFixed(0)}</div></div><div class="card"><div class="stat-label">PURCHASE</div><div class="stat-value">₹${purchase.toFixed(0)}</div></div><div class="card"><div class="stat-label">INVOICES</div><div class="stat-value">${db.sales.length}</div></div><div class="card"><div class="stat-label">PRODUCTS</div><div class="stat-value">${db.products.length}</div></div></div>`}
+function barcode(){return `<div class="page-head"><div><h2>Barcode & Price Tags</h2><p>Generate a clean printable product tag preview.</p></div></div><div class="panel"><div class="form-grid"><div class="field"><label>PRODUCT</label><input id="tagName"></div><div class="field"><label>PRICE</label><input id="tagPrice" type="number"></div><div class="field"><label>BARCODE</label><input id="tagCode"></div></div><button class="btn btn-primary" style="margin-top:15px" onclick="tagPreview()">Generate Tag</button><div id="tagOut" style="margin-top:18px"></div></div>`}
+function tagPreview(){document.getElementById('tagOut').innerHTML=`<div class="card" style="max-width:360px;text-align:center"><b>${esc(document.getElementById('tagName').value)}</b><div style="font-size:30px;letter-spacing:4px;margin:14px">||||||||||||</div><span>${esc(document.getElementById('tagCode').value)}</span><h2 class="gold">₹${esc(document.getElementById('tagPrice').value)}</h2><button class="btn" onclick="window.print()">Print Tag</button></div>`}
+function staff(){return `<div class="page-head"><div><h2>Staff Management</h2><p>Staff role, salary, contact and document record.</p></div><button class="btn btn-primary" onclick="staffForm()">＋ Add Staff</button></div><div class="panel">${db.staff.length?db.staff.map(s=>`<div class="card" style="margin-bottom:10px"><b>${esc(s.name)}</b> • ${esc(s.role)} • ₹${s.salary}<br><span class="muted">${esc(s.mobile)} • ${esc(s.document||'No document')}</span></div>`).join(''):'<div class="empty">No staff records.</div>'}</div>`}
+function staffForm(){showModal(`<div class="modal-head"><h2>Add Staff</h2><button class="close" onclick="closeModal()">✕</button></div><div class="form-grid"><div class="field"><label>NAME</label><input id="stName"></div><div class="field"><label>MOBILE</label><input id="stMobile"></div><div class="field"><label>ROLE</label><input id="stRole"></div><div class="field"><label>SALARY</label><input id="stSalary" type="number"></div><div class="field"><label>ADDRESS</label><input id="stAddress"></div><div class="field"><label>PHOTO / DOCUMENT NAME</label><input id="stDoc" type="file"></div></div><button class="btn btn-primary" style="margin-top:15px" onclick="saveStaff()">Save Staff</button>`)}
+function saveStaff(){const f=document.getElementById('stDoc').files[0];db.staff.push({name:document.getElementById('stName').value,mobile:document.getElementById('stMobile').value,role:document.getElementById('stRole').value,salary:+document.getElementById('stSalary').value||0,address:document.getElementById('stAddress').value,document:f?.name||''});save();closeModal();page('staff')}
+function backup(){return `<div class="page-head"><div><h2>Backup & Restore</h2><p>Protect your local ERP data and prepare email backup.</p></div></div><div class="cards"><div class="card"><h3>Full Backup</h3><p class="muted">Download complete JSON database.</p><button class="btn btn-primary" onclick="downloadBackup()">Download Backup</button></div><div class="card"><h3>Restore</h3><p class="muted">Restore from a previous JSON backup.</p><input type="file" id="restoreFile" accept=".json" onchange="restoreBackup(event)"></div><div class="card"><h3>Email Backup</h3><p class="muted">Prepare Gmail message for backup workflow.</p><button class="btn" onclick="emailBackup()">Open Email</button></div><div class="card"><h3>Drive</h3><p class="muted">Cloud backup connector placeholder for final build.</p><button class="btn" onclick="toast('Google Drive connector will be added in final build')">Configure</button></div></div>`}
+function downloadBackup(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(db,null,2)],{type:'application/json'}));a.download='GarmentERP_Backup_'+Date.now()+'.json';a.click();toast('Backup downloaded')}
+function restoreBackup(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{db=JSON.parse(r.result);save();toast('Backup restored');page('dashboard')}catch(x){toast('Invalid backup file')}};r.readAsText(f)}
+function emailBackup(){location.href='mailto:fcortex.growth@gmail.com?subject=GarmentERP%20Backup&body=Please%20attach%20the%20downloaded%20GarmentERP%20backup%20file.'}
+function settings(){return `<div class="page-head"><div><h2>Business Settings</h2><p>Shop profile, logo, premium and GST Live controls.</p></div></div><div class="panel"><div class="form-grid"><div class="field"><label>SHOP NAME</label><input id="setName" value="${esc(db.shop.name)}"></div><div class="field"><label>MOBILE</label><input id="setMobile" value="${esc(db.shop.mobile)}"></div><div class="field"><label>EMAIL</label><input id="setEmail" value="${esc(db.shop.email)}"></div><div class="field full"><label>ADDRESS</label><input id="setAddress" value="${esc(db.shop.address)}"></div><div class="field"><label>SHOP LOGO</label><input id="setLogo" type="file" accept="image/*"></div></div><div class="actions" style="margin-top:15px"><button class="btn btn-primary" onclick="saveSettings()">Save Settings</button><button class="btn" onclick="removeLogo()">Remove Logo</button></div></div><div class="grid"><div class="panel"><h3>Premium License</h3><p class="muted">Current: <b class="gold">${db.license}</b></p><button class="btn btn-primary" onclick="openPremium()">Premium ₹24,999</button></div><div class="panel"><h3>GST Live</h3><p class="muted">GST Live activation is available only after Premium activation.</p><button class="btn" onclick="gstLive()">Activate GST Live ₹6,999</button></div></div>`}
+function saveSettings(){db.shop.name=document.getElementById('setName').value;db.shop.mobile=document.getElementById('setMobile').value;db.shop.email=document.getElementById('setEmail').value;db.shop.address=document.getElementById('setAddress').value;const f=document.getElementById('setLogo').files[0];if(f){const r=new FileReader();r.onload=()=>{db.shop.logo=r.result;save();toast('Settings + logo saved')};r.readAsDataURL(f)}else{save();toast('Settings saved')}}
+function removeLogo(){db.shop.logo='';save();toast('Logo removed')}
+function gstLive(){if(db.license!=='PREMIUM'){toast('Activate Premium ₹24,999 first');return}showModal(`<div class="modal-head"><h2>GST Live Activation</h2><button class="close" onclick="closeModal()">✕</button></div><div class="price-card"><strong>₹6,999</strong><small>GST Live service activation</small></div><button class="btn btn-primary" style="margin-top:15px" onclick="closeModal();toast('GST Live payment screen ready for final gateway integration')">Continue to Payment</button>`)}
+function security(){return `<div class="page-head"><div><h2>Security & Login Logs</h2><p>Admin credentials, recovery and activity monitoring.</p></div><button class="btn" onclick="clearLogs()">Clear Logs</button></div><div class="panel"><h3>Change Login ID / Password</h3><div class="form-grid"><div class="field"><label>NEW LOGIN ID</label><input id="secId" value="${esc(db.admin.id)}"></div><div class="field"><label>NEW PASSWORD</label><input id="secPass" type="password"></div><div class="field"><label>EMAIL</label><input id="secEmail" value="${esc(db.admin.email)}"></div><div class="field"><label>MOBILE</label><input id="secMobile" value="${esc(db.admin.mobile)}"></div></div><button class="btn btn-primary" style="margin-top:15px" onclick="changeAdmin()">Save Changes + OTP</button></div><div class="panel" style="margin-top:15px"><h3>Activity Log</h3>${db.logs.map(x=>`<div style="padding:9px 0;border-bottom:1px solid #1e2a42"><span class="muted">${x.time}</span> — ${esc(x.action)}</div>`).join('')||'<div class="empty">No logs.</div>'}</div>`}
+function changeAdmin(){const id=document.getElementById('secId').value,p=document.getElementById('secPass').value,e=document.getElementById('secEmail').value,m=document.getElementById('secMobile').value;showModal(`<h2>OTP Verification</h2><p class="muted">Prototype OTP: 123456</p><input class="search" id="secOtp" placeholder="Enter OTP"><button class="btn btn-primary" style="margin-top:12px" onclick="verifyAdmin('${encodeURIComponent(id)}','${encodeURIComponent(p)}','${encodeURIComponent(e)}','${encodeURIComponent(m)}')">Verify & Save</button>`)}
+function verifyAdmin(i,p,e,m){if(document.getElementById('secOtp').value!=='123456'){toast('Invalid OTP');return}db.admin.id=decodeURIComponent(i);if(decodeURIComponent(p))db.admin.password=decodeURIComponent(p);db.admin.email=decodeURIComponent(e);db.admin.mobile=decodeURIComponent(m);save();log('Admin credentials changed');closeModal();page('security');toast('Security details updated')}
+function clearLogs(){db.logs=[];save();page('security')}
+function scanBarcode(){const b=prompt('Scan / enter barcode');if(!b)return;const p=db.products.find(x=>x.barcode===b);if(!p){toast('Barcode not found');return}page('billing');setTimeout(()=>{document.getElementById('bProd').value=p.name;document.getElementById('bRate').value=p.sale;},30)}
+function showModal(html){document.getElementById('modalBox').innerHTML=html;document.getElementById('modal').classList.add('show')}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
+</script>
+</body>
+</html>
